@@ -1,21 +1,20 @@
 var express = require('express'),
-    app = express();
-var https = require('https');
-var fs = require('fs');
-var key = fs.readFileSync('./key.pem');
-var cert = fs.readFileSync('./cert.pem')
-var https_options = {
-    key: key,
-    cert: cert
-};
+    app = express(),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose');
+    mongoose.connect('mongodb://sandy:Excellence@localhost:27017/sample');
 
-var PORT = 8000;
-var HOST = 'localhost';
+    app.use(bodyParser.json());
 
-var server = https.createServer(https_options, app).listen(PORT, HOST);
-app.get("/", function (req, res) {
-    res.send("welcome to docker api");
-})
+    app.use('/v1',require('./routes'));
+
+    app.use(function(req,res,next){
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization,x-access-token");
+        next();
+    });
 
 
-//app.listen(8080);
+
+
+
+    app.listen(8000);
