@@ -5,11 +5,11 @@ var express = require('express'),
     middleware = require('../utils/midleware/midleware');
 
 
-router.get('/',uc.find.bind(uc));
-router.get('/:id',uc.findOne.bind(uc));
-router.post('/',uc.create.bind(uc));
-router.post('/auth',uc.login.bind(uc));
-router.put('/:id',uc.update.bind(uc));
-router.delete('/:id',uc.delete.bind(uc));
+router.get('/', middleware.auth, uc.find.bind(uc));
+router.get('/:id', middleware.auth, uc.findOne.bind(uc));
+router.post('/', uc.create.bind(uc));
+router.post('/auth', uc.login.bind(uc));
+router.put('/:id', middleware.auth, uc.update.bind(uc));
+router.delete('/:id', middleware.auth, uc.delete.bind(uc));
 
 module.exports = router;
